@@ -1,0 +1,17 @@
+- name: installing zabbix agent
+  yum: name=zabbix-agent state=installed
+
+- name: enable and start zabbix agent service
+  service:
+      name: zabbix-agent
+      enabled: yes
+      state: restarted      
+
+- name: "enable port 10050,10051 "
+  firewalld:
+    port: 10050-10051/tcp
+    permanent: yes
+    state: enabled
+
+- name: reload firewalld
+  shell: firewall-cmd --reload

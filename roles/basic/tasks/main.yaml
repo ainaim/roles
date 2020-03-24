@@ -1,0 +1,5 @@
+ - name: "installing Tree"
+   yum: name=tree state=installed
+
+ - name: "installing vim"
+   yum: name=vim state=installed

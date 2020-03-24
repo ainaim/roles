@@ -1,0 +1,11 @@
+- name: create the remote repo
+  shell: createrepo /var/www/html/myrepo 
+  delegate_to: localhost
+
+- name: Add repository
+  yum_repository:
+        name: local
+        description: zabbix and dependenciesq
+        baseurl: http://192.169.1.50/myrepo
+        enabled: yes
+        gpgcheck: no

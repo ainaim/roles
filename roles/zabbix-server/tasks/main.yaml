@@ -1,0 +1,64 @@
+#- name: "Disable SELinux"
+#  selinux:
+#    state: disabled
+#- name: "reboot and wait until it return"
+#  reboot:
+
+- name: "install httpd"
+  yum: name=httpd state=installed
+
+- name: Enable service httpd, and not touch the state
+  service:
+    name: httpd
+    enabled: yes
+
+- name: Start service httpd, if not started
+  service:
+    name: httpd
+    state: started
+
+- name: "enable port 80"
+  firewalld:
+    port: 80/tcp
+    permanent: yes
+    state: enabled
+- name: "reload firewalld"
+  shell: firewall-cmd --reload
+
+- name: install php
+  yum:
+    state: installed
+    name:    
+        - php
+        - php-pear
+        - php-cgi
+        - php-common
+        - php-mbstring
+        - php-snmp
+        - php-gd 
+        - php-pecl-mysql 
+        - php-xml
+        - php-mysql
+        - php-gettext
+        - php-bcmath
+
+- name: install mariadb server
+  yum: name=mariadb-server state=installed
+
+- name: Enable service mariadb.service
+  service:
+    name: mariadb
+    enabled: yes
+    state: started    
+
+- name: installing zabbix server
+  yum:
+    state: installed
+    name:
+        - zabbix-server-mysql
+        - zabbix-web-mysql 
+        - zabbix-agent
+        - zabbix-get    
+
+- name: restart Httpd
+  service: name=httpd state=restarted
